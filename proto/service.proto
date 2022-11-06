@@ -1,0 +1,62 @@
+//export PATH="$PATH:$(go env GOPATH)/bin"
+//protoc --go_out=. --go-grpc_out=. proto/*.proto
+
+syntax = "proto3";
+option go_package = "/pb";
+
+message RequestUp {
+  int64 Id = 1;  
+  string Name = 2; 
+  string Brand = 3;  
+  float Value = 4; 
+}
+
+message RequestAdd {
+  string Name = 2; 
+  string Brand = 3;  
+  float Value = 4; 
+}
+
+message RequestPartID {
+  int64 Id = 1;
+}
+
+message RequestMessage {
+  string Message = 1;
+}
+
+message ResponsePart {
+  int64 Id = 1;  
+  string Name = 2; 
+  string Brand = 3;  
+  float Value = 4; 
+}
+
+message RequestDataSourceName {
+  string DataSourceName = 1;
+}
+
+message ResponseStatus {
+  string Status = 1;
+}
+
+message ResponseParts {
+  message Part {
+    int64 Id = 1;  
+    string Name = 2; 
+    string Brand = 3;  
+    float Value = 4; 
+  }
+
+  repeated Part Parts = 1;
+}
+
+service SendMessage{
+  rpc Home (RequestMessage) returns (ResponseStatus){}
+  rpc OpenDB (RequestDataSourceName) returns (ResponseStatus){}
+  rpc ReturnAPart (RequestPartID) returns (ResponsePart){}
+  rpc ReturnParts (RequestMessage) returns (ResponseParts){}
+  rpc AddPart (RequestAdd) returns (ResponsePart){}
+  rpc DelPart (RequestPartID) returns (ResponsePart){}
+  rpc UpPart (RequestUp) returns (ResponsePart){}
+}
